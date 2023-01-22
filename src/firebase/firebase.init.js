@@ -11,7 +11,7 @@ const firebaseInitialization = () => {
 
 };
 
-export default firebaseInitialization
+export default firebaseInitialization 
 
 
 
