@@ -8,10 +8,15 @@ import logo from '../../assets/images/logo.png'
 import headerBg from '../../assets/images/header-bg.png'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
-import { NavLink} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
+import { Button } from 'react-bootstrap';
 
 
 const Header = () => {
+    const { signInWithGoogle,signInWithgitHub, user, error, logOut } = useAuth()
+    console.log(user?.photoURL)
+
     return (
         <Navbar style={{ background: `url(${headerBg})` }} collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Container>
@@ -43,33 +48,59 @@ const Header = () => {
                         <NavLink className='text-white' to="courses">Courses</NavLink>
                         <NavLink className='text-white' to="/course-feature">Feature Courses</NavLink>
                         <NavLink className='text-white' to="/cart">
-                         
-                        <FontAwesomeIcon icon={faShoppingCart} />
-                        <Badge style={{color:'yellow',background:"orange"}} >
-                            0
-                        </Badge>
-                         
-                        
+
+                            <FontAwesomeIcon icon={faShoppingCart} />
+                            <Badge style={{ color: 'yellow', background: "orange" }} >
+                                0
+                            </Badge>
+
+
                         </NavLink>
-                        <NavLink className='text-white' to="/signup">Sign Up</NavLink>
-                        <NavLink className='text-white' to="/login">Log in</NavLink>
- 
-                        <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">
-                                Another action
-                            </NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action/3.4">
-                                Separated link
-                            </NavDropdown.Item>
-                        </NavDropdown>
+                        {
+                            user?.uid ?
+                                <NavDropdown
+
+                                    title={
+                                        <img
+                                            style={{ width: "30px", borderRadius: '50%' }}
+                                            src={user?.photoURL}
+                                            alt="" />
+
+
+                                    }
+
+                                >
+
+
+                               <div className='text-center p-4 ' >
+                                <h6>{user.displayName}</h6>
+                                <p>{user.email}</p>
+                                <button onClick={logOut} >SignOut</button>
+
+                               </div>
+
+
+
+
+                                </NavDropdown>
+                                : <>
+                                    <NavLink className='text-white' to="/signup">Sign Up</NavLink>
+                                    <NavLink className='text-white' to="/login"> Sign In</NavLink>
+
+                                </>
+
+                        }
+
+
+
+
+
+
                     </Nav>
                 </Navbar.Collapse>
             </Container>
         </Navbar>
-    
+
     );
 };
 
